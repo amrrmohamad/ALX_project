@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Log In - Statices</title>
+	<link rel="icon" href="/static/image/code-branch.png">
+	<link rel="stylesheet" href="/static/css/login.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="left-section">
+			<div class="logo">
+				<img src="/static/image/logoG-fotor.png" alt="Git ST Logo" >
+			</div>
+			<div class="illustration">
+				<img src="/static/image/Screenshot_man.png" sizes="(max-width: 512px) 100vw, 512px" alt="Illustration">
+
+			</div>
+		</div>
+		<div class="right-section">
+			<div class="form-container">
+				<h2>Welcome Back </h2>
+				<h3><strong>Are you ready for statices?!</strong></h3>
+				<br>
+				<hr><br>
+				<p><strong>Start your statices Now</strong></p>
+				<form action="{{ url_for('login') }}" method="POST">
+					<div class="input-group">
+						<label for="username">Name</label>
+						<input type="text" id="username" name="username" placeholder="Your Name" required>
+					</div>
+					<div class="input-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" placeholder="example@mail.com" required>
+					</div>
+					<div class="input-group">
+						<label for="password">Password</label>
+						<input type="password" id="password" name="password" placeholder="8+ characters" required
+							minlength="8">
+					</div>
+					<button type="submit" class="login-btn">Log in</button>
+				</form>
+				<br>
+				<p>You don't have an account? <a class="link" href="/signup">Sign up</a></p>
+				<p>Or create account with:</p>
+				<div class="social-icons">
+					<a href="#"><img src="/static/image/facebook.png" alt="Facebook" loading="lazy"></a>
+					<a href="#"><img src="/static/image/linkedin.png" alt="LinkedIn" loading="lazy"></a>
+					<a href="#"><img src="/static/image/google.png" alt="Google" loading="lazy"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+
+header {
+    padding-top: 10px;
+    border-radius: 40px;
+    background-image: url('/static/image/webback.jpg');
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.logo img {
+    height: 30px;
+    margin-right: 20px;
+    border-bottom: 30px;
+}
+
+.logo span {
+    font-weight:500;
+    font-size: 30px;
+    color: #303030;
+}
+
+nav a{
+    margin: 0 15px;
+    text-decoration: none;
+    color: #1f1f1f;
+    font-weight: 500;
+	/*background-color:rgb(231, 231, 231);
+	border: 10px solid rgb(231, 231, 231);*/
+	border-radius: 20px;
+	
+}
+nav a:hover{
+    background-color: #ff9b3e;
+    border: 10px solid #ff9b3e;
+}
+
+
+.auth-buttons .button-header {
+    background-color: #fdfeff;
+    display: inline-flex;
+    padding: 10px;
+    font-weight: bolder;
+    background-color: #ff7113;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 16px;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.auth-buttons .button-header:hover{
+    background-color: #ff9b3e;
+}

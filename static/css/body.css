@@ -1,0 +1,128 @@
+html{
+    scroll-behavior: smooth;
+}
+
+body {
+    /*background-image: url("/static/image/webback.jpg");*/
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 30px;
+}
+
+.hero {
+    display: inline;
+    align-items:baseline;
+    padding-top: 30px;
+    justify-content: space-between;
+}
+
+.hero img {
+    display: inline;
+    width: 150px;
+    margin-right: 50px;
+}
+
+.text h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.text p {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.text .free {
+    background-color: #feca1e;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.upload-area {
+    text-align: center;
+}
+
+.container .click-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 70px;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 40px;
+}
+
+.container .click-button:hover{
+    background-color:#0058b6;
+
+}
+
+.upload-area p {
+    color: #666;
+    font-size: 14px;
+}
+
+.upload-area a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 800px;
+    margin: 150px auto;
+    padding: 20px;
+    /*background-color: #ffffff;*/
+    box-shadow: 0 0 10px  #000000(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.result {
+    margin-top: 20px;
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin-bottom: 10px;
+}
+input {
+    background-color:  #e9e9e9;
+    color:  #090a0a;
+    width: 500px;
+    padding: 15px;
+    border: 1px solid #000000;
+    border-radius: 30px;
+}
+
+#get{
+    color: #ff6600 ;
+    font-size:80px;
+    font-weight:bolder;
+}
+
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+    }
+
+    .element{
+        animation: fadeOut 2s forwards;
+        animation-timeline: scroll();
+    }

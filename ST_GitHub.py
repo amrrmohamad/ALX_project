@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 #################################################################
 # remeber before run programming you should run database.py first
-# to create data base
+# to create data base => try this way if something happen
 #################################################################
 
 

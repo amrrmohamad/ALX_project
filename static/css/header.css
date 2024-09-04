@@ -1,14 +1,12 @@
 
 header {
     padding-top: 10px;
-    border-radius: 40px;
-    background-image: url('/static/image/webback.jpg');
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
     background-color: #fff;
-    border-bottom: 1px solid #eee;
+    border-bottom: 2px solid #ff6600;
 }
 
 .logo img {
@@ -56,4 +54,26 @@ nav a:hover{
 
 .auth-buttons .button-header:hover{
     background-color: #ff9b3e;
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+header.dark-mode, footer.dark-mode {
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+.container.dark-mode {
+    background-color: #1f1f1f;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.repo.dark-mode {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+    color: #ffffff;
 }

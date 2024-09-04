@@ -36,6 +36,7 @@
 				<button class="button-header">Sign up</button>
 			</a>
 		</div>
+		<button id="dark-mode-toggle" class="button-header">Toggle Dark Mode</button>
 	</header>
 
 	<main>
@@ -55,6 +56,12 @@
 				<input type="text" id="username" placeholder="User name">
 				<br><br>
 				<button class="click-button" onclick="loadGitHubStats()"> Click Here </button>
+				<div id="loading-spinner" style="display: none;">
+					<img src="/static/image/output-onlinegiftools.gif" alt="Loading..." style="width: 50px;">
+				</div>
+				<br>
+				<br>
+				<hr>
 				<div class="result" id="result"></div>
 				<div id="github-calendar"></div>
 			</div>
@@ -67,7 +74,8 @@
 
 		<script src="../static/js/d3.min.js"></script>
 		<script src="../static/js/github-calendar.min.js"></script>
-		<script src="../static/js/script.js"></script>
+		<script src="../static/js/script1.js"></script>
+		<script src="../static/js/script2.js"></script>
 	</section>
 
 	<footer id="us">
@@ -79,23 +87,35 @@
 					<!-- Add more language options here -->
 				</select>
 			</div>
-			<div class="footer-social">
-				<a href="#"><img src="/static/image/facebook.png" alt="Facebook"></a>
-				<a href="#"><img src="/static/image/twitter.png" alt="Twitter"></a>
-				<a href="#"><img src="/static/image/instagram.png" alt="Instagram"></a>
-				<a href="#"><img src="/static/image/youtube.png" alt="YouTube"></a>
-				<a href="#"><img src="/static/image/linkedin.png" alt="LinkedIn"></a>
+			<div class="footer-content">
+				<div class="footer-about">
+					<h4>About Us</h4>
+					<p>We provide GitHub stats directly on your website, allowing you to easily monitor and display your GitHub activity.</p>
+				</div>
+				<div class="footer-links">
+					<h4>Quick Links</h4>
+					<a href="#">Terms of Service</a>
+					<a href="#">Privacy Policy</a>
+					<a href="#">Cookie Policy</a>
+					<a href="#">Support</a>
+				</div>
+				<div class="footer-social">
+					<h4>Follow Us</h4>
+					<a href="#"><img src="/static/image/facebook.png" alt="Facebook"></a>
+					<a href="#"><img src="/static/image/twitter.png" alt="Twitter"></a>
+					<a href="#"><img src="/static/image/instagram.png" alt="Instagram"></a>
+					<a href="#"><img src="/static/image/youtube.png" alt="YouTube"></a>
+					<a href="#"><img src="/static/image/linkedin.png" alt="LinkedIn"></a>
+				</div>
 			</div>
-			<div class="footer-links">
-				<a href="#">Terms of Service</a>
-				<a href="#">General Terms and Conditions</a>
-				<a href="#">Privacy Policy</a>
-				<a href="#">Cookie Policy</a>
-				<a href="#">Imprint</a>
+			<div class="footer-bottom">
+				<p>&copy; 2024 GH Statices. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
 
+
 </body>
 
 </html>
+

@@ -36,10 +36,11 @@ def signup():
             cursor = data.cursor()
 
             try:
-                cursor.execute(
-                    'INSERT INTO users (username, password, email) VALUES (?, ?, ?)',
+                cursor.execute("""
+                    INSERT INTO users 
                     (username, password, email)
-                    )
+                    VALUES (?, ?, ?)
+                    """,(username, password, email))
                 data.commit()
                 return redirect(url_for('home'))
             except sqlite3.IntegrityError:

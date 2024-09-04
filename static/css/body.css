@@ -35,7 +35,12 @@ main {
     margin-left: 135px;
 }
 
+.hero .element{
+    position: relative;
+}
+
 .text h1 {
+    padding-top: 170px;
     font-size: 64px;
     font-weight: 900;
     margin: 0;
@@ -120,8 +125,8 @@ main {
 }
 
 .container {
-    max-width: 800px;
-    margin: 150px auto;
+    width: 700px;
+    margin: 130px auto;
     padding: 20px;
     /*background-color: #ffffff;*/
     box-shadow: 0 0 10px  #000000(0, 0, 0, 0.1);
@@ -162,10 +167,11 @@ input {
 
 /* Loading Spinner */
 #loading-spinner {
+    margin-right: 410px;
+    margin-bottom: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
 }
 
 #loading-spinner img {

@@ -1,79 +1,173 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-header {
-    padding-top: 10px;
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background-color: #fff;
-    border-bottom: 2px solid #ff6600;
+    background-color: #ffffff;
+    border-bottom: 2px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.logo img {
-    height: 30px;
-    margin-right: 20px;
-    border-bottom: 30px;
+.logo-container {
+    display: flex;
+    align-items: center;
 }
 
-.logo span {
-    font-weight:500;
-    font-size: 30px;
-    color: #303030;
+.logo {
+    height: 40px;
+    margin-right: 15px;
 }
 
-nav a{
-    margin: 0 15px;
+.site-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333333;
+}
+
+.navigation .nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.navigation .nav-links li {
+    margin-left: 25px;
+}
+
+.navigation .nav-links li a {
     text-decoration: none;
-    color: #1f1f1f;
+    color: #555555;
     font-weight: 500;
-	/*background-color:rgb(231, 231, 231);
-	border: 10px solid rgb(231, 231, 231);*/
-	border-radius: 20px;
-	
-}
-nav a:hover{
-    background-color: #ff9b3e;
-    border: 10px solid #ff9b3e;
+    transition: color 0.3s;
 }
 
+.navigation .nav-links li a:hover {
+    color: #ff6600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.search-bar input {
+    padding: 8px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    font-size: 16px;
+    width: 200px;
+    transition: width 0.3s;
+}
+
+.search-bar input:focus {
+    width: 250px;
+}
+
+.search-button {
+    background-color: #ff6600;
+    border: none;
+    border-radius: 0 20px 20px 0;
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.search-button img {
+    height: 20px;
+    width: 20px;
+}
 
 .auth-buttons .button-header {
-    background-color: #fdfeff;
-    display: inline-flex;
-    padding: 10px;
-    font-weight: bolder;
-    background-color: #ff7113;
+    background-color: #ff6600;
+    color: #ffffff;
     border: none;
+    padding: 10px 20px;
     border-radius: 20px;
-    color: #fff;
-    font-size: 16px;
-    justify-content: space-between;
     cursor: pointer;
-    margin-top: 5px;
+    margin-left: 10px;
+    font-weight: 500;
+    transition: background-color 0.3s;
 }
 
-.auth-buttons .button-header:hover{
-    background-color: #ff9b3e;
+.auth-buttons .button-header:hover {
+    background-color: #e05500;
 }
 
-/* Dark Mode */
+/* Dark Mode Styles */
 body.dark-mode {
     background-color: #121212;
     color: #ffffff;
 }
 
-header.dark-mode, footer.dark-mode {
+.header.dark-mode {
     background-color: #1f1f1f;
-    color: #ffffff;
+    border-bottom: 2px solid #333333;
 }
 
-.container.dark-mode {
-    background-color: #1f1f1f;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+.navigation .nav-links li a.dark-mode {
+    color: #bbbbbb;
 }
 
-.repo.dark-mode {
-    background-color: #1f1f1f;
-    border: 1px solid #333;
+.navigation .nav-links li a.dark-mode:hover {
+    color: #ff6600;
+}
+
+.search-bar input.dark-mode {
+    background-color: #333333;
     color: #ffffff;
+    border: 1px solid #444444;
+}
+
+.search-button.dark-mode {
+    background-color: #444444;
+}
+
+.auth-buttons .button-header.dark-mode {
+    background-color: #444444;
+}
+
+.auth-buttons .button-header.dark-mode:hover {
+    background-color: #555555;
+}
+
+button#dark-mode-toggle.dark-mode {
+    background-color: #444444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navigation .nav-links {
+        display: none;
+    }
+    .header {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .header-right {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .search-bar input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .auth-buttons .button-header {
+        width: 100%;
+    }
 }

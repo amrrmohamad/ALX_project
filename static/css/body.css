@@ -4,12 +4,11 @@ html{
 
 body {
     background-size: cover;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Dancing Script', cursive;
     margin: 0;
     padding: 0;
     background-color: #f9f9f9;
     color: #141414;
-    
 }
 
 main {
@@ -39,24 +38,19 @@ main {
     position: relative;
 }
 
+#get{
+    color: #ff5100 ;
+    font-size:90px;
+    font-weight:bolder;
+    text-shadow: 2px 2px 4px black;
+}
 
 .text h1 {
     padding-top: 170px;
     padding-left: 20px;
     font-size: 45px;
-    /* font-weight: 900; */
     margin: 0;
     color: #000000;
-    /* text-shadow: 2px 2px 1px #000000; */
-}
-
-.text h1.get {
-    padding-top: 170px;
-    font-size: 64px;
-    font-weight: 900;
-    margin: 0;
-    color: #ff6600;
-    text-shadow: 2px 2px 4px #000000;
 }
 
 .text p {
@@ -69,6 +63,87 @@ main {
     padding: 5px 10px;
     border-radius: 5px;
     font-weight: bold;
+}
+
+.container {
+    width: 700px;
+    margin: 130px auto;
+    padding: 20px;
+    /* background-color: #ffffff; */
+    box-shadow: 0 0 10px  #000000(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: center;
+}
+
+input {
+    background-color:  #e9e9e9;
+    color:  #090a0a;
+    width: 500px;
+    padding: 15px;
+    border: 1px solid #000000;
+    border-radius: 30px;
+}
+
+.container .click-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 70px;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 40px;
+    /* transition: background-color 0.3s ease, box-shadow 0.3s ease; */
+    transition: transform 0.2s ease-in-out;
+}
+
+.container .click-button:hover{
+    background-color:#0058b6;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.result {
+    margin-top: 20px;
+}
+
+.avatar {
+    
+    border-radius: 50%;
+    display: block;
+}
+
+.left-section{
+    text-align: left;
+    zoom: 1.2;
+    padding-bottom: 90px;
+    font-weight: bolder;
+    font-family: 'Dancing Script', cursive;
+}
+
+/* Loading Spinner */
+#loading-spinner {
+    margin-right: 410px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loading-spinner img {
+    width: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.readme-section pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
 }
 
 /* Repository List Cards */
@@ -107,23 +182,6 @@ main {
     text-align: center;
 }
 
-.container .click-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 15px 70px;
-    border: none;
-    border-radius: 30px;
-    font-size: 18px;
-    cursor: pointer;
-    margin: 40px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.container .click-button:hover{
-    background-color:#0058b6;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-}
 
 .upload-area p {
     color: #666;
@@ -135,61 +193,6 @@ main {
     text-decoration: none;
 }
 
-.container {
-    width: 700px;
-    margin: 130px auto;
-    padding: 20px;
-    /*background-color: #ffffff;*/
-    box-shadow: 0 0 10px  #000000(0, 0, 0, 0.1);
-    border-radius: 5px;
-    text-align: center;
-}
-
-.result {
-    margin-top: 20px;
-}
-
-.avatar {
-    
-    border-radius: 50%;
-    display: block;
-}
-
-.left-section{
-    text-align: left;
-    zoom: 1.2;
-    padding-bottom: 90px;
-    font-weight: bolder;
-}
-
-input {
-    background-color:  #e9e9e9;
-    color:  #090a0a;
-    width: 500px;
-    padding: 15px;
-    border: 1px solid #000000;
-    border-radius: 30px;
-}
-
-#get{
-    color: #ff6600 ;
-    font-size:80px;
-    font-weight:bolder;
-}
-
-/* Loading Spinner */
-#loading-spinner {
-    margin-right: 410px;
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#loading-spinner img {
-    width: 50px;
-    animation: spin 1s linear infinite;
-}
 
 
 @keyframes spin {

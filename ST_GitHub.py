@@ -13,6 +13,9 @@ app = Flask(__name__)
 # to create data base => try this way if something happen
 #################################################################
 
+# calling function data base to create it
+init_db()
+
 
 # The path of main page
 @app.route('/')
@@ -21,6 +24,34 @@ def home():
         return render_template('index.html')
     else:
         return redirect(url_for('login'))
+
+
+# The path of log in page
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # get form data
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        # connect to data base
+        with sqlite3.connect('users.db') as data:
+            cursor = data.cursor()
+            cursor.execute(
+                'SELECT * FROM users WHERE username = ?', (username,)
+                )
+            user = cursor.fetchone()
+            email = cursor.fetchone()
+
+            # return the main page if user name exist
+            if user and check_password_hash(user[2], password):
+                session['username'] = username
+                return redirect(url_for('home'))
+            else:
+                return "Check user name or password"
+
+    return render_template('login.html')
 
 
 # The path of sign up page
@@ -47,6 +78,21 @@ def signup():
                 return "user name or email is already exist"
 
     return render_template('signup.html')
+
+@app.route('/get_readme/<username>/<repo>', methods=['GET'])
+def get_readme(username, repo):
+    """Fetch the README.md file from a GitHub repository"""
+    url = f'https://api.github.com/{username}/{username}/readme'
+    headers = {'Accept': 'application/vnd.github.v3+json'}
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        content = base64.b64decode(data['content']).decode('utf-8')
+        return jsonify({'content': content})
+    else:
+        return jsonify({'error': 'README not found'}), 404
 
 
 # The path of GitHub stats
@@ -99,33 +145,6 @@ def get_github_stats(username):
         return jsonify({'error': f'Error fetching data: {error_e}'}), 500
 
 
-# The path of log in page
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # get form data
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-
-        # connect to data base
-        with sqlite3.connect('users.db') as data:
-            cursor = data.cursor()
-            cursor.execute(
-                'SELECT * FROM users WHERE username = ?', (username,)
-                )
-            user = cursor.fetchone()
-            email = cursor.fetchone()
-
-            # return the main page if user name exist
-            if user and check_password_hash(user[2], password):
-                session['username'] = username
-                return redirect(url_for('home'))
-            else:
-                return "Error in user name or password"
-
-    return render_template('login.html')
-
 
 # The log out function
 @app.route('/logout')
@@ -139,3 +158,5 @@ app.secret_key = 'your_secret_key'
 
 if __name__ == '__main__':
     app.run(debug=True, port=5500)
+
+

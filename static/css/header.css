@@ -6,12 +6,12 @@
 }
 
 .header {
-    display: flex;
+    display:flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 50px;
-    background-color: #ffffff;
-    border-bottom: 2px solid #e0e0e0;
+    background-color: #1e1e1e;
+    border-bottom: 2px solid #000000;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -30,7 +30,7 @@
 .site-title {
     font-size: 24px;
     font-weight: 600;
-    color: #333333;
+    color: #ffffff;
 }
 
 .navigation .nav-links {
@@ -44,7 +44,7 @@
 
 .navigation .nav-links li a {
     text-decoration: none;
-    color: #555555;
+    color: #d8d8d8;
     font-weight: 500;
     transition: color 0.3s;
 }
@@ -65,8 +65,10 @@
 }
 
 .search-bar input {
+    color: #ffffff;
+    background-color: #3b3b3b;
     padding: 8px 15px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #1e1e1e;
     border-radius: 20px 0 0 20px;
     outline: none;
     font-size: 16px;

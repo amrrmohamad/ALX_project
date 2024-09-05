@@ -24,6 +24,10 @@ async function loadGitHubStats() {
                             <p>Created Date: ${new Date(data.created_at).toLocaleDateString()}</p>
                         </div>
                         <hr>
+                        <div id="readme-section" class="readme-section">
+                            <p>Loading README...</p>
+                        </div>
+                        <hr>
                         <h3>Repositories:</h3>
                         ${data.repos.map(repo => `
                             <div class="repo">
@@ -34,6 +38,20 @@ async function loadGitHubStats() {
                         `).join('')}
                     </div>
                 `;
+
+                // Fetch README.md from the user's profile repository
+                const readmeResponse = await fetch(`/get_user_readme/${username}`);
+                if (readmeResponse.ok) {
+                    const readmeData = await readmeResponse.json();
+                    const readmeSection = document.getElementById('readme-section');
+                    readmeSection.innerHTML = `
+                        <h3>README.md</h3>
+                        <pre>${readmeData.content}</pre>
+                    `;
+                } else {
+                    const readmeSection = document.getElementById('readme-section');
+                    readmeSection.innerHTML = `<p>README.md not found for this user.</p>`;
+                }
                 // show the calendar
                 new GitHubCalendar("#github-calendar", username);
 

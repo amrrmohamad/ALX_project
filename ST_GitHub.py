@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import requests
 import sqlite3
 import os
+import base64
 from database import init_db
 
 app = Flask(__name__)
@@ -79,14 +80,14 @@ def signup():
 
     return render_template('signup.html')
 
+
 @app.route('/get_readme/<username>/<repo>', methods=['GET'])
-def get_readme(username, repo):
+def get_user_readme(username, repo):
     """Fetch the README.md file from a GitHub repository"""
-    url = f'https://api.github.com/{username}/{username}/readme'
+    repo_url = f"https://api.github.com/repos/{username}/{repo}/readme"
     headers = {'Accept': 'application/vnd.github.v3+json'}
-    
-    response = requests.get(url, headers=headers)
-    
+    response = requests.get(repo_url, headers=headers)
+
     if response.status_code == 200:
         data = response.json()
         content = base64.b64decode(data['content']).decode('utf-8')
@@ -95,7 +96,7 @@ def get_readme(username, repo):
         return jsonify({'error': 'README not found'}), 404
 
 
-# The path of GitHub stats
+#The path of GitHub stats
 @app.route('/github-stats/<username>', methods=['GET'])
 def get_github_stats(username):
     user_url = f'https://api.github.com/users/{username}'
@@ -145,7 +146,6 @@ def get_github_stats(username):
         return jsonify({'error': f'Error fetching data: {error_e}'}), 500
 
 
-
 # The log out function
 @app.route('/logout')
 def logout():
@@ -157,6 +157,6 @@ def logout():
 app.secret_key = 'your_secret_key'
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5500)
+    app.run(debug=True, port=5000)
 
 

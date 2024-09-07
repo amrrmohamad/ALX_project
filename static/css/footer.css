@@ -108,6 +108,6 @@ footer::before {
     left: 0;
     width: 100%;
     height: 20px;
-    background: url('/static/image/wavy-top-edge.png') no-repeat;
+    /* background: url('/static/image/wavy-top-edge.png') no-repeat; */
     background-size: cover;
 }

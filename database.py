@@ -13,3 +13,7 @@ def init_db():
             )
         ''')
     print("Database and tables created successfully.")
+
+# don't run file from here
+if __name__ ==  "__name__":
+    exit()

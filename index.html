@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- meta to describe the website -->
+	<meta name="description"
+		content="Welcome to the Online APIs website project! This project aims to provide APIs with the github platform where users can show the username statices in the website page." />
+	<title>GitHub Statices</title>
+	<link rel="icon" href="./static/image/code-branch.png">
+	<link rel="stylesheet" href="./static/css/footer.css">
+	<link rel="stylesheet" href="./static/css/body.css">
+	<link rel="stylesheet" href="./static/css/footer.css">
+	<link rel="stylesheet" href="./static/css/github-calendar.css">
+</head>
+
+
+<body translate="no">
+	<header class="header">
+		<div class="logo-container">
+			<img src="./static/image/code-branch.png" alt="Logo" class="logo">
+			<span class="site-title">GH Statices</span>
+		</div>
+		<nav class="navigation">
+			<ul class="nav-links">
+				<li><a href="https://github.com" target="_blank">GitHub</a></li>
+				<li><a href="#" target="_blank">How to Use</a></li>
+				<li><a href="https://chatgpt.com/" target="_blank">Tools & AI</a></li>
+				<li><a href="#us">About Us</a></li>
+			</ul>
+		</nav>
+		<div class="header-right">
+			<div class="search-bar">
+				<input type="text" placeholder="Search..." />
+				<button class="search-button"><img src="./static/image/magnifying-glass.png" alt="Search"></button>
+			</div>
+			<div class="auth-buttons">
+				<a href="./templates/login.html">
+					<button class="button-header">Log in</button>
+				</a>
+				<a href="./templates/signup.html">
+					<button class="button-header">Sign up</button>
+				</a>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero">
+			<div class="element">
+				<img src="./static/image/icons8-git-800.png" alt="github image">
+				<div class="text">
+					<h1><span id="get">Get</span> Your Statices Now!</h1>
+					<p>100% Automatically and <span class="free">Free</span></p>
+				</div>
+			</div>
+			<br>
+			<hr><br>
+
+			<div class="container">
+				<h3>Enter your GitHub's user name</h3>
+				<br>
+				<input type="text" id="username" placeholder="User name">
+				<br><br>
+				<button class="click-button" onclick="loadGitHubStats()"> Click Here </button>
+				<div id="loading-spinner" style="display: none;">
+					<img src="./static/image/output-onlinegiftools.gif" alt="Loading..." style="width: 50px;">
+				</div>
+				<br>
+				<br>
+				<hr>
+				<div class="result" id="result"></div>
+				<div id="readme-section"></div>
+				<div id="github-calendar"></div>
+			</div>
+		</section>
+	</main>
+
+	<section>
+		<script src="./static/js/d3.min.js"></script>
+		<script src="./static/js/github-calendar.min.js"></script>
+		<script src="./static/js/script1.js"></script>
+		<script src="./static/js/script2.js"></script>
+	</section>
+
+	<footer id="us">
+		<div class="footer-container">
+			<div class="footer-top">
+				<select class="language-select">
+					<option value="en">English</option>
+					<option value="ar">Arabic</option>
+					<option value="ar">French</option>
+					<option value="ar">Germany</option>
+					<!-- Add more language options here -->
+				</select>
+			</div>
+			<!-- new update -->
+			<!-- <button id="dark-mode-toggle" class="button-header">Toggle Dark Mode</button> -->
+			<div class="footer-content">
+				<div class="footer-about">
+					<h4>About Us</h4>
+					<p>We provide GitHub stats directly on your website, allowing you to easily monitor and display your
+						GitHub activity.</p>
+				</div>
+				<div class="footer-links">
+					<h4>Quick Links</h4>
+					<a href="#">Terms of Service</a>
+					<a href="#">Privacy Policy</a>
+					<a href="#">Cookie Policy</a>
+					<a href="#">Support</a>
+				</div>
+				<div class="footer-social">
+					<h4>Follow Us</h4>
+					<a href="#"><img src="./static/image/facebook.png" alt="Facebook"></a>
+					<a href="#"><img src="./static/image/twitter.png" alt="Twitter"></a>
+					<a href="#"><img src="./static/image/instagram.png" alt="Instagram"></a>
+					<a href="#"><img src="./static/image/youtube.png" alt="YouTube"></a>
+					<a href="#"><img src="./static/image/linkedin.png" alt="LinkedIn"></a>
+				</div>
+			</div>
+			<div class="footer-bottom">
+				<p>&copy; 2024 GH Statices. All rights reserved, Contact with us </p>
+			</div>
+		</div>
+	</footer>
+
+</body>
+
+</html>
+

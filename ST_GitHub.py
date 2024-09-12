@@ -21,6 +21,9 @@ init_db()
 # The path of main page
 @app.route('/')
 def home():
+    """
+    It's a function to route for main page of website 
+    """
     if 'username' in session:
         return render_template('index.html')
     else:
@@ -30,10 +33,16 @@ def home():
 # The path of log in page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Login function page using POST method:
+        connect to data base and check of user
+        or password is correct or not:
+            if  True => redirect home page
+                False => show error massage
+    """
     if request.method == 'POST':
         # get form data
         username = request.form['username']
-        email = request.form['email']
         password = request.form['password']
 
         # connect to data base
@@ -43,14 +52,13 @@ def login():
                 'SELECT * FROM users WHERE username = ?', (username,)
                 )
             user = cursor.fetchone()
-            email = cursor.fetchone()
 
             # return the main page if user name exist
             if user and check_password_hash(user[2], password):
                 session['username'] = username
                 return redirect(url_for('home'))
             else:
-                return "Check user name or password"
+                return "Check user name or password", 400
 
     return render_template('login.html')
 
@@ -58,6 +66,12 @@ def login():
 # The path of sign up page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    """
+    Sign up function using method GET and POST:
+        connect to data base:
+            insert user, email and password
+            check if user is exist or not
+    """
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -76,7 +90,7 @@ def signup():
                 data.commit()
                 return redirect(url_for('home'))
             except sqlite3.IntegrityError:
-                return "user name or email is already exist"
+                return "user name or email is already exist", 400
 
     return render_template('signup.html')
 
@@ -99,20 +113,25 @@ def get_user_readme(username, repo):
 #The path of GitHub stats
 @app.route('/github-stats/<username>', methods=['GET'])
 def get_github_stats(username):
+    """
+    Fetch data from GitHub website:
+        get username, stars, forks, number of repo
+        following, followers, avatar and activity
+        store all of this in json file
+            user_data, repos_data
+    """
     user_url = f'https://api.github.com/users/{username}'
     repos_url = f'https://api.github.com/users/{username}/repos'
 
-    user_response = requests.get(user_url)
-    repos_response = requests.get(repos_url)
+    #user_response = requests.get(user_url)
+    #repos_response = requests.get(repos_url)
 
     try:
         # Send requests to the GitHub API with a timeout
         user_response = requests.get(user_url, timeout=5)
         repos_response = requests.get(repos_url, timeout=5)
-        var1 = user_response.status_code
-        var2 = user_response.status_code
 
-        if var1 == 200 and var2 == 200:
+        if  user_response.status_code == 200 and  repos_response.status_code == 200:
             user_data = user_response.json()
             repos_data = repos_response.json()
 
@@ -149,6 +168,10 @@ def get_github_stats(username):
 # The log out function
 @app.route('/logout')
 def logout():
+    """ 
+    log out function 
+        remove username from session
+    """
     session.pop('username', None)
     return redirect(url_for('login'))
 

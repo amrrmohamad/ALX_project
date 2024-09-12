@@ -48,19 +48,19 @@ async function loadGitHubStats() {
                 console.error('Server returned an error:', response.status, response.statusText);
                 resultDiv.innerHTML = '<p>Could not fetch repositories or find the user</p>';
             }
-            // Fetch README.md from the user's profile repository
-            //const readmeResponse = await fetch(`/get_user_readme/${username}`);
-            //if (readmeResponse.ok) {
-            //        const readmeData = await readmeResponse.json();
-            //        const readmeSection = document.getElementById('readme-section');
-            //        readmeSection.innerHTML = `
-            //            <h3>README.md</h3>
-            //            <pre>${readmeData.content}</pre>
-            //        `;
-            //} else {
-            //    const readmeSection = document.getElementById('readme-section');
-            //    readmeSection.innerHTML = `<p>README.md not found for this user.</p>`;
-            //}
+            //Fetch README.md from the user's profile repository
+            const readmeResponse = await fetch(`/get_user_readme/${username}`);
+            if (readmeResponse.ok) {
+                    const readmeData = await readmeResponse.json();
+                    const readmeSection = document.getElementById('readme-section');
+                    readmeSection.innerHTML = `
+                        <h3>README.md</h3>
+                        <pre>${readmeData.content}</pre>
+                    `;
+            } else {
+                const readmeSection = document.getElementById('readme-section');
+                readmeSection.innerHTML = `<p>README.md not found for this user.</p>`;
+            }
         } catch (error) {
             loadingSpinner.style.display = 'none';  // Hide loading spinner
             // same to discover error at console

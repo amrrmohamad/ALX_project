@@ -168,7 +168,6 @@ class TestFlaskApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Welcome to the Home Page', response.data)
 
-    # still has error
     def test_logout_page_render(self):
         """
         Test Case: Accessing the logout page.

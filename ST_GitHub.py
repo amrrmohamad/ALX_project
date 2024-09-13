@@ -45,20 +45,29 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
+        if not username or not password:
+            return jsonify({'error':'Please enter username and password'}), 400
+
         # connect to data base
-        with sqlite3.connect('users.db') as data:
-            cursor = data.cursor()
+        with sqlite3.connect('users.db') as conn:
+            cursor = conn.cursor()
             cursor.execute(
                 'SELECT * FROM users WHERE username = ?', (username,)
                 )
             user = cursor.fetchone()
 
             # return the main page if user name exist
-            if user and check_password_hash(user[2], password):
-                session['username'] = username
-                return redirect(url_for('home'))
+            if user:
+                stored_password = user[2]
+                if check_password_hash(stored_password, password):
+                    session['username'] = username
+                    return redirect(url_for('home'))
+                else:
+                    print("Password is incorrect")
+                    return jsonify({"error": "Check user name or password"}), 400
             else:
-                return "Check user name or password", 400
+                print("User name is incorrect")
+                return jsonify({"error": "Check user name or password"}), 400
 
     return render_template('login.html')
 
@@ -75,22 +84,27 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
-        password = generate_password_hash(request.form['password'])
+        password = request.form['password']
+
+        if not username or not email or not password:
+            return jsonify({'error': 'Please enter username, email and password'}), 400
+        
+        hashed_password = generate_password_hash(password)
 
         # connect to data base
-        with sqlite3.connect('users.db') as data:
-            cursor = data.cursor()
-
-            try:
+        try:
+            with sqlite3.connect('users.db') as conn:
+                cursor = conn.cursor()
                 cursor.execute("""
                     INSERT INTO users 
                     (username, password, email)
                     VALUES (?, ?, ?)
-                    """,(username, password, email))
-                data.commit()
+                    """,(username, hashed_password, email))
+                conn.commit()
                 return redirect(url_for('home'))
-            except sqlite3.IntegrityError:
-                return "user name or email is already exist", 400
+        except sqlite3.IntegrityError:
+            print("User name or email is already exist")
+            return jsonify({"error": "user name or email is already exist"}), 400
 
     return render_template('signup.html')
 
@@ -103,8 +117,7 @@ def get_user_readme(username, repo):
     response = requests.get(repo_url, headers=headers)
 
     if response.status_code == 200:
-        data = response.json()
-        content = base64.b64decode(data['content']).decode('utf-8')
+        content = base64.b64decode(response.json()['content']).decode('utf-8')
         return jsonify({'content': content})
     else:
         return jsonify({'error': 'README not found'}), 404
@@ -122,9 +135,6 @@ def get_github_stats(username):
     """
     user_url = f'https://api.github.com/users/{username}'
     repos_url = f'https://api.github.com/users/{username}/repos'
-
-    #user_response = requests.get(user_url)
-    #repos_response = requests.get(repos_url)
 
     try:
         # Send requests to the GitHub API with a timeout
@@ -157,8 +167,7 @@ def get_github_stats(username):
 
             return jsonify(stats)
         else:
-            return jsonify(
-                {'Error': 'User not found or unable to fetch repos'}), 404
+            return jsonify({'Error': 'User not found or unable to fetch repos'}), 404
 
     # return request exceptions, such as timeout or connection errors
     except requests.exceptions.RequestException as error_e:
@@ -175,9 +184,8 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
 
-
 # to make password not appear in data base
-app.secret_key = 'your_secret_key'
+app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

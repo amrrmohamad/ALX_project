@@ -1,8 +1,9 @@
-Flask==2.3.2
+Flask==3.0.3
 Flask-WTF==1.1.1
-Werkzeug==2.3.2
+Werkzeug==3.0.4
 requests==2.31.0
 sqlite3==3.39.5
 pytest==7.4.2
 unittest==1.4.34
 python==3.12.6
+Flask-Testing==0.8.1

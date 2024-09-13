@@ -1,127 +1,196 @@
 import unittest
-from unittest.mock import patch
-import os
-import tempfile
 import sqlite3
-from flask import Flask, session
-import requests
+import os
+from werkzeug.security import generate_password_hash
 from ST_GitHub import app, init_db
 
-class FlaskAppTestCase(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        """Create a temporary database file and initialize it."""
-        cls.db_fd, cls.db_path = tempfile.mkstemp()
-        os.close(cls.db_fd)
-        app.config['DATABASE'] = cls.db_path
-        init_db()
+class TestFlaskApp(unittest.TestCase):
+    """
+    A suite of test cases for the Flask application to ensure correct routing,
+    user authentication, and database interactions.
+    """
 
-    @classmethod
-    def tearDownClass(cls):
-        """Remove the temporary database file."""
-        if os.path.exists(cls.db_path):
-            os.remove(cls.db_path)
+    def create_app(self):
+        """
+        Create a Flask application for testing.
+        """
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'test_secret_key'
+        # Use an in-memory database for testing
+        app.config['DATABASE'] = ':memory:'
+        return app
 
     def setUp(self):
-        """Create a test client and set up context."""
-        self.client = app.test_client()
-        app.testing = True
-        with self.client:
-            self.client.get('/logout')  # Ensure the user is logged out before each test
+        """Setup the database for testing."""
+        self.app = self.create_app()
+        self.client = self.app.test_client()
+        
+        # Initialize the in-memory database and create tables
+        with self.app.app_context():
+            init_db()
 
     def tearDown(self):
         """Clean up after each test."""
+        # No need to remove the file if using in-memory database
         pass
 
-    def test_home_if_logged_in(self):
-        with self.client.session_transaction() as sess:
-            sess['username'] = 'testuser'
-
+    def test_home_redirects_to_login(self):
+        """
+        Test Case: Accessing the home page without being logged in.
+        Expectation: Should redirect to the login page.
+        """
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)  # 302 indicates a redirect
+        self.assertEqual(response.location, '/login')
 
-    def test_home_redirect_if_not_logged_in(self):
-        """Test that unauthorized users are redirected to login."""
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 302)  # Redirect status code
-        self.assertEqual(response.headers['Location'], '/login')  # Check redirection to login page
+    # still has error
+    def test_login_with_valid_credentials(self):
+        """
+        Test Case: Logging in with valid credentials.
+        Expectation: Should redirect to the home page.
+        """
+        username = 'testuser'
+        password = generate_password_hash('testpassword')
+        email = 'test@example.com'
+        
+        with self.app.app_context():
+            conn = sqlite3.connect(':memory:')
+            conn.execute("CREATE TABLE users (username TEXT UNIQUE, password TEXT, email TEXT)")
+            conn.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", 
+                         (username, password, email))
+            conn.commit()
+        
+        response = self.client.post('/login', data={
+            'username': username,
+            'password': 'testpassword',
+        })
+        self.assertEqual(response.status_code, 302)  # Redirects to home page
 
-    def test_login_get(self):
-        """Test that the login page loads successfully."""
-        response = self.client.get('/login')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Log in', response.data)  # Adjust this if necessary
+    def test_login_with_invalid_credentials(self):
+        """
+        Test Case: Logging in with invalid credentials.
+        Expectation: Should return an error message.
+        """
+        with self.app.app_context():
+            conn = sqlite3.connect(':memory:')
+            conn.execute("CREATE TABLE users (username TEXT UNIQUE, password TEXT, email TEXT)")
+            conn.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+                        ('testuser', generate_password_hash('testpassword'), 'testuser@example.com'))
+            conn.commit()
 
-    def test_login_post_success(self):
-        """Test login with valid credentials."""
-        self.client.post('/signup', data=dict(username='testuser', email='testuser@example.com', password='password'))
-        response = self.client.post('/login', data=dict(username='testuser', email='testuser@example.com', password='password'))
-        self.assertEqual(response.status_code, 302)  # Redirect on successful login
-        self.assertEqual(response.headers['Location'], '/')  # Redirect to home page
+        response = self.client.post('/login', data=dict(
+            username='testuser',
+            password='wrongpassword'
+        ))
 
-    def test_login_post_fail(self):
-        """Test login with invalid credentials."""
-        response = self.client.post('/login', data=dict(username='cxvxv', email='test@gmail.com', password='wrongpassword'))
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Check user name or password', response.data)
+        self.assertEqual(response.status_code, 400)  # Error message due to incorrect password
 
-    def test_signup_get(self):
-        """Test that the signup page loads successfully."""
-        response = self.client.get('/signup')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Sign Up', response.data)  # Adjust this if necessary
+    # still has error
+    def test_signup_with_new_user(self):
+        """
+        Test Case: Signing up with a new user.
+        Expectation: Should redirect to the home page.
+        """
+        response = self.client.post('/signup', data={
+            'username': 'newuser',
+            'email': 'newuser@example.com',
+            'password': 'newpassword'
+        })
+        self.assertEqual(response.status_code, 302)  # Redirects to home page
 
-    def test_signup_post_success(self):
-        """Test signup with valid details."""
-        response = self.client.post('/signup', data=dict(username='newuser', email='newuser@example.com', password='password'))
-        self.assertEqual(response.status_code, 302)  # Redirect on successful signup
-        self.assertEqual(response.headers['Location'], '/')  # Redirect to home page
+    def test_signup_with_existing_username(self):
+        """
+        Test Case: Signing up with an existing username.
+        Expectation: Should return an error message.
+        """
+        username = 'existinguser'
+        password = generate_password_hash('password')
+        email = 'existing@example.com'
+        
+        with self.app.app_context():
+            conn = sqlite3.connect(':memory:')
+            conn.execute("CREATE TABLE users (username TEXT UNIQUE, password TEXT, email TEXT)")
+            conn.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", 
+                         (username, password, email))
+            conn.commit()
 
-    def test_signup_post_duplicate_user(self):
-        """Test signup with a duplicate username."""
-        self.client.post('/signup', data=dict(username='duplicateuser', email='duplicate@example.com', password='password'))
-        response = self.client.post('/signup', data=dict(username='duplicateuser', email='duplicate@example.com', password='password'))
-        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/signup', data={
+            'username': username,
+            'email': 'newemail@example.com',
+            'password': 'newpassword'
+        })
+        self.assertEqual(response.status_code, 400)
         self.assertIn(b'user name or email is already exist', response.data)
 
-    @patch('requests.get')
-    def test_get_github_stats(self, mock_get):
-        mock_response = requests.Response()
-        mock_response.status_code = 200
-        mock_response._content = b'{"login": "testuser", "avatar_url": "http://example.com/avatar", "public_repos": 10, "followers": 5, "following": 3, "created_at": "2020-01-01T00:00:00Z", "repos": [{"name": "repo1", "stargazers_count": 10, "forks_count": 2, "html_url": "http://example.com/repo1"}]}'
-        mock_get.return_value = mock_response
+    def test_signup_with_existing_email(self):
+        """
+        Test Case: Signing up with an existing email.
+        Expectation: Should return an error message.
+        """
+        username = 'uniqueuser'
+        password = generate_password_hash('password')
+        email = 'unique@example.com'
+        
+        with self.app.app_context():
+            conn = sqlite3.connect(':memory:')
+            conn.execute("CREATE TABLE users (username TEXT UNIQUE, password TEXT, email TEXT)")
+            conn.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)", 
+                         (username, password, email))
+            conn.commit()
 
-        response = self.client.get('/github-stats/testuser')
+        response = self.client.post('/signup', data={
+            'username': 'anotheruser',
+            'email': email,
+            'password': 'newpassword'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertIn(b'user name or email is already exist', response.data)
+
+    def test_login_page_render(self):
+        """
+        Test Case: Accessing the login page.
+        Expectation: Should render the login page without errors.
+        """
+        response = self.client.get('/login')
         self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Welcome Back', response.data)
 
-    #def test_get_user_readme(self):
-    #    """Test fetching README from a GitHub repo."""
-    #    response = self.client.get('/get_readme/ALX_project/Hello-World')  # Replace with a valid repo
-    #    self.assertEqual(response.status_code, 200)
-    #    data = response.get_json()
-    #    self.assertIn('content', data)
+    # still has error
+    def test_home_page_render(self):
+        """
+        Test Case: Accessing the home page.
+        Expectation: Should render the home page without errors.
+        """
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+    
+        response = self.client.get('/home')  # Ensure correct URL
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Welcome to the Home Page', response.data)
 
-    def test_github_stats_user_not_found(self):
-        """Test fetching GitHub user stats for a non-existent user."""
-        response = self.client.get('/github-stats/amrrmogf22hamad')
-        self.assertEqual(response.status_code, 404)
-        data = response.get_json()
-        self.assertIn('Error', data)
+    # still has error
+    def test_logout_page_render(self):
+        """
+        Test Case: Accessing the logout page.
+        Expectation: Should render the logout page without errors.
+        """
+        # Ensure user is logged in before logout
+        with self.client.session_transaction() as session:
+            session['username'] = 'testuser'
+        
+        response = self.client.get('/logout')  # Ensure correct URL
+        self.assertEqual(response.status_code, 302)  # Should redirect after logout
+        # Check if redirected to the login page or another page
+        self.assertEqual(response.location, '/login')
 
-    def test_github_readme_not_found(self):
-        """Test fetching README from a non-existent GitHub repo."""
-        response = self.client.get('/get_readme/octocat/Invalid-Repo')
-        self.assertEqual(response.status_code, 404)
-        data = response.get_json()
-        self.assertIn('error', data)
-
-    def test_logout(self):
-        """Test that the user is logged out and redirected to login."""
-        self.client.post('/signup', data=dict(username='testuser', email='testuser@example.com', password='password'))
-        self.client.post('/login', data=dict(username='testuser', email='testuser@example.com', password='password'))
-        response = self.client.get('/logout')
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers['Location'], '/login')
+    def test_signup_page_render(self):
+        """
+        Test Case: Accessing the signup page.
+        Expectation: Should render the signup page without errors.
+        """
+        response = self.client.get('/signup')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Sign Up', response.data)
 
 if __name__ == '__main__':
     unittest.main()

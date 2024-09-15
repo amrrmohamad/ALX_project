@@ -35,5 +35,28 @@ git clone https://github.com/amrrmohamad/your-repository.git
 ## Challenge
 this project will be solve a problem that you can know everything about users in GitHub with one click
 
+## Environment
+
+* __OS:__ Ubuntu 14.04 LTS
+* __language:__ Python 3.12.6
+* __web server:__ nginx/1.4.6
+* __application server:__ Flask 3.0.3
+* __database:__ mysqlite3
+* __style:__
+  * __python:__ PEP 8 (v. 1.7.0)
+  * __bash:__ ShellCheck 0.3.3
+  * __javascript__: semistandard
+
 ## Risk
 I think there is no risks in this portfolio project
+
+## Testing
+
+### `unittest`
+
+This project uses python library, `unittest` to run tests on all python files.
+All unittests are in the `./tests` directory with the command:
+
+* File Storage Engine Model:
+
+  * `$ python3 -m unittest discover -v ./tests/`

@@ -22,7 +22,7 @@ init_db()
 @app.route('/')
 def home():
     """
-    It's a function to route for main page of website 
+    It's a function to route for main(home) page of website 
     """
     if 'username' in session:
         return render_template('index.html')
@@ -35,8 +35,8 @@ def home():
 def login():
     """
     Login function page using POST method:
-        connect to data base and check of user
-        or password is correct or not:
+        connect to data base and check user:
+        password is correct or not:
             if  True => redirect home page
                 False => show error massage
     """
@@ -130,7 +130,7 @@ def get_github_stats(username):
     Fetch data from GitHub website:
         get username, stars, forks, number of repo
         following, followers, avatar and activity
-        store all of this in json file
+        store all of this in json file:
             user_data, repos_data
     """
     user_url = f'https://api.github.com/users/{username}'
